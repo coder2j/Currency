@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="05w-Hh-D5W">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <scenes>
+        <!--Main Table View Controller-->
+        <scene sceneID="BrC-89-ujJ">
+            <objects>
+                <tableViewController id="05w-Hh-D5W" customClass="mainTableViewController" customModule="Currency" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="EEm-7i-LgG">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Calculator_Currency" rowHeight="85" id="npx-Y3-8fx">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="npx-Y3-8fx" id="W4L-Fh-n26">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lh1-U7-42e">
+                                            <rect key="frame" x="8" y="10" width="65" height="65"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="200" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ABC" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DRl-B1-cbt">
+                                            <rect key="frame" x="80" y="32" width="42" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="42" id="9gD-8l-ohr"/>
+                                                <constraint firstAttribute="height" constant="21" id="CBt-1O-dDO"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="300" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FullName" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Viy-GT-ZCW">
+                                            <rect key="frame" x="412" y="51" width="180" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="A0Y-zz-kdY"/>
+                                                <constraint firstAttribute="width" constant="180" id="MYt-z6-G5q"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <textField opaque="NO" clipsSubviews="YES" tag="400" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入金额" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Zmd-fR-Fxw">
+                                            <rect key="frame" x="492" y="13" width="100" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="J38-5B-5J7"/>
+                                                <constraint firstAttribute="width" constant="100" id="hme-05-F8p"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="DRl-B1-cbt" firstAttribute="leading" secondItem="W4L-Fh-n26" secondAttribute="leading" constant="80" id="1Vy-Y3-bkc"/>
+                                        <constraint firstItem="DRl-B1-cbt" firstAttribute="top" secondItem="W4L-Fh-n26" secondAttribute="top" constant="32" id="4hZ-Vj-Xqx"/>
+                                        <constraint firstAttribute="bottom" secondItem="Viy-GT-ZCW" secondAttribute="bottom" constant="12.5" id="7PL-ee-vuV"/>
+                                        <constraint firstAttribute="trailing" secondItem="Viy-GT-ZCW" secondAttribute="trailing" constant="8" id="CNA-jH-I4O"/>
+                                        <constraint firstAttribute="trailing" secondItem="Zmd-fR-Fxw" secondAttribute="trailing" constant="8" id="HIf-UM-Ehm"/>
+                                        <constraint firstItem="Viy-GT-ZCW" firstAttribute="top" secondItem="W4L-Fh-n26" secondAttribute="top" constant="51" id="N9T-Dk-bMI"/>
+                                        <constraint firstAttribute="bottom" secondItem="Zmd-fR-Fxw" secondAttribute="bottom" constant="41.5" id="ZVH-ZH-SQA"/>
+                                        <constraint firstItem="Zmd-fR-Fxw" firstAttribute="top" secondItem="W4L-Fh-n26" secondAttribute="top" constant="13" id="fXK-xF-pta"/>
+                                        <constraint firstAttribute="bottom" secondItem="DRl-B1-cbt" secondAttribute="bottom" constant="31.5" id="kNN-Gy-HIS"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="05w-Hh-D5W" id="BqX-lX-aV9"/>
+                            <outlet property="delegate" destination="05w-Hh-D5W" id="CQP-aG-KE0"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="J3y-aB-bKX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="531" y="357"/>
+        </scene>
+    </scenes>
+</document>
