@@ -16,7 +16,7 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate {
     var notificationCenter: NSNotificationCenter = NSNotificationCenter.defaultCenter()
     var currencyItemsList: NSMutableArray = []
     
-    var selectedRow = -1
+    var selectedRow = 0
     var selectedRow_Currency: CurrencyItem!
     var baseMoneyInUSD: Float!
     
@@ -26,12 +26,16 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate {
         
         let currencyItem: CurrencyItem = CurrencyItem(flatName: "CN", shortName: "CNY", fullName: "人名币", price: 6.20)
         currencyItemsList.addObject(currencyItem)
+        baseMoneyInUSD = 100 / currencyItem.currencyPrice
         
         let currencyItem_USD: CurrencyItem = CurrencyItem(flatName: "US", shortName: "USD", fullName: "美元", price: 1.00)
         currencyItemsList.addObject(currencyItem_USD)
         
         let currencyItem_EUR: CurrencyItem = CurrencyItem(flatName: "EU", shortName: "EUR", fullName: "欧元", price: 0.9)
         currencyItemsList.addObject(currencyItem_EUR)
+        
+        tableView.contentInset.top = 20
+        
         
     }
     
@@ -47,29 +51,36 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(calculatorCurrencyIdentifier, forIndexPath: indexPath) as! UITableViewCell
-        var currencyForCell = currencyItemsList.objectAtIndex(indexPath.row) as! CurrencyItem
-        
-        var shortName = cell.viewWithTag(200) as! UILabel
-        shortName.text = currencyForCell.currencyShortName
-        
-        var fullName = cell.viewWithTag(300) as! UILabel
-        fullName.text = currencyForCell.currencyFullName
-        
-        var textField = cell.viewWithTag(400) as! UITextField
-        
-        if selectedRow > -1 && selectedRow <= currencyItemsList.count {
-            textField.text = String(format: "%.2f", currencyForCell.valueForTextField)
-        } else {
-            textField.text = "0.0"
-        }
-        textField.sizeToFit()
+        var currencyForRow = currencyItemsList.objectAtIndex(indexPath.row) as! CurrencyItem
+        updateTableViewCellCustomViews(cell, currencyForRow: currencyForRow, indexPath: indexPath)
         
         return cell
     }
     
+    func updateTableViewCellCustomViews(cell: UITableViewCell, currencyForRow: CurrencyItem, indexPath: NSIndexPath) {
+        
+        var shortName = cell.viewWithTag(200) as! UILabel
+        shortName.text = currencyForRow.currencyShortName
+        
+        var flagName = cell.viewWithTag(100) as! UIImageView
+        let index: String.Index = advance(shortName.text!.startIndex, 2)
+        flagName.image = UIImage(named: shortName.text!.substringToIndex(index).lowercaseString)
+        
+        var fullName = cell.viewWithTag(300) as! UILabel
+        fullName.text = currencyForRow.currencyFullName
+        
+        var textField = cell.viewWithTag(400) as! UITextField
+        if indexPath.row != selectedRow {
+            textField.userInteractionEnabled = false
+        }
+        currencyForRow.valueForTextField = baseMoneyInUSD * currencyForRow.currencyPrice
+        
+        textField.text = String(format: "%.2f", currencyForRow.valueForTextField)
+    }
+    
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         currencyItemsList.removeObjectAtIndex(indexPath.row)
-        //tableView.deleteRowsAtIndexPaths(indexPath, withRowAnimation: UITableViewRowAnimation.Automatic)
+        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
         
     }
     
@@ -79,6 +90,7 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate {
         
         let cell: UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
         var textField = cell.viewWithTag(400) as! UITextField
+        textField.userInteractionEnabled = true
         textField.placeholder = "100"
         textField.text = "\(100)"
         
@@ -115,7 +127,13 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate {
 
     func textField_Value_Changed(notification: NSNotification) {
         var textField: UITextField = notification.object as! UITextField
+        print("text is \(textField.text)")
+        textField.delegate = self
         refreshTabelViewCell(textField)
     }
     
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }

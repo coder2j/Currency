@@ -52,11 +52,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Currency/mainTableViewController.swift"
-            timestampString = "459525748.839597"
+            timestampString = "459530377.501417"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
             landmarkName = "mainTableViewController"
             landmarkType = "3">
          </BreakpointContent>
