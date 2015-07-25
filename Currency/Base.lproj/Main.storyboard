@@ -32,35 +32,36 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="300" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FullName" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Viy-GT-ZCW">
-                                            <rect key="frame" x="412" y="51" width="180" height="21"/>
+                                            <rect key="frame" x="482" y="63" width="110" height="12"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="21" id="A0Y-zz-kdY"/>
-                                                <constraint firstAttribute="width" constant="180" id="MYt-z6-G5q"/>
+                                                <constraint firstAttribute="width" constant="110" id="2sY-4i-Wsr"/>
+                                                <constraint firstAttribute="height" constant="12" id="EfZ-Fz-Ja6"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textField opaque="NO" clipsSubviews="YES" tag="400" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入金额" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Zmd-fR-Fxw">
-                                            <rect key="frame" x="492" y="13" width="100" height="30"/>
+                                        <textField opaque="NO" clipsSubviews="YES" tag="400" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Zmd-fR-Fxw">
+                                            <rect key="frame" x="493" y="21" width="99" height="30"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="30" id="J38-5B-5J7"/>
-                                                <constraint firstAttribute="width" constant="100" id="hme-05-F8p"/>
+                                                <constraint firstAttribute="width" constant="99" id="mIn-HD-ug6"/>
+                                                <constraint firstAttribute="height" constant="30" id="xO7-SV-6ao"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                            <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                            <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                         </textField>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="DRl-B1-cbt" firstAttribute="leading" secondItem="W4L-Fh-n26" secondAttribute="leading" constant="80" id="1Vy-Y3-bkc"/>
                                         <constraint firstItem="DRl-B1-cbt" firstAttribute="top" secondItem="W4L-Fh-n26" secondAttribute="top" constant="32" id="4hZ-Vj-Xqx"/>
-                                        <constraint firstAttribute="bottom" secondItem="Viy-GT-ZCW" secondAttribute="bottom" constant="12.5" id="7PL-ee-vuV"/>
-                                        <constraint firstAttribute="trailing" secondItem="Viy-GT-ZCW" secondAttribute="trailing" constant="8" id="CNA-jH-I4O"/>
-                                        <constraint firstAttribute="trailing" secondItem="Zmd-fR-Fxw" secondAttribute="trailing" constant="8" id="HIf-UM-Ehm"/>
-                                        <constraint firstItem="Viy-GT-ZCW" firstAttribute="top" secondItem="W4L-Fh-n26" secondAttribute="top" constant="51" id="N9T-Dk-bMI"/>
-                                        <constraint firstAttribute="bottom" secondItem="Zmd-fR-Fxw" secondAttribute="bottom" constant="41.5" id="ZVH-ZH-SQA"/>
-                                        <constraint firstItem="Zmd-fR-Fxw" firstAttribute="top" secondItem="W4L-Fh-n26" secondAttribute="top" constant="13" id="fXK-xF-pta"/>
+                                        <constraint firstAttribute="trailing" secondItem="Zmd-fR-Fxw" secondAttribute="trailing" constant="8" id="Qnl-Yj-EVk"/>
+                                        <constraint firstAttribute="bottom" secondItem="Zmd-fR-Fxw" secondAttribute="bottom" constant="33.5" id="RYA-HY-QGB"/>
+                                        <constraint firstAttribute="bottom" secondItem="Viy-GT-ZCW" secondAttribute="bottom" constant="9.5" id="by9-ge-Lkq"/>
+                                        <constraint firstItem="Zmd-fR-Fxw" firstAttribute="top" secondItem="W4L-Fh-n26" secondAttribute="top" constant="21" id="hIN-OE-k5u"/>
+                                        <constraint firstAttribute="trailing" secondItem="Viy-GT-ZCW" secondAttribute="trailing" constant="8" id="htq-ue-gPF"/>
                                         <constraint firstAttribute="bottom" secondItem="DRl-B1-cbt" secondAttribute="bottom" constant="31.5" id="kNN-Gy-HIS"/>
+                                        <constraint firstItem="Viy-GT-ZCW" firstAttribute="top" secondItem="W4L-Fh-n26" secondAttribute="top" constant="63" id="zXQ-ZH-8Ob"/>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
