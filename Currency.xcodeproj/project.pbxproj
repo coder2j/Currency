@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		264102131B6477E600CEF7D1 /* AllCurrencyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264102121B6477E600CEF7D1 /* AllCurrencyTableViewController.swift */; };
+		26660CB11B68FA9F00E223F3 /* AllCurrencyTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26660CB01B68FA9F00E223F3 /* AllCurrencyTableViewDelegate.swift */; };
 		26E14DF61B5F221600213750 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E14DF51B5F221600213750 /* AppDelegate.swift */; };
 		26E14DFB1B5F221600213750 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26E14DF91B5F221600213750 /* Main.storyboard */; };
 		26E14DFD1B5F221600213750 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26E14DFC1B5F221600213750 /* Images.xcassets */; };
@@ -27,6 +29,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		264102121B6477E600CEF7D1 /* AllCurrencyTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllCurrencyTableViewController.swift; sourceTree = "<group>"; };
+		26660CB01B68FA9F00E223F3 /* AllCurrencyTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllCurrencyTableViewDelegate.swift; sourceTree = "<group>"; };
 		26E14DF01B5F221600213750 /* Currency.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Currency.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26E14DF41B5F221600213750 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		26E14DF51B5F221600213750 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -83,6 +87,8 @@
 				26E14E171B5FEA9100213750 /* mainTableViewController.swift */,
 				26E14E151B5F2DD300213750 /* CurrencyItem.swift */,
 				26E14DF91B5F221600213750 /* Main.storyboard */,
+				264102121B6477E600CEF7D1 /* AllCurrencyTableViewController.swift */,
+				26660CB01B68FA9F00E223F3 /* AllCurrencyTableViewDelegate.swift */,
 				26E14DFC1B5F221600213750 /* Images.xcassets */,
 				26E14DFE1B5F221600213750 /* LaunchScreen.xib */,
 				26E14DF31B5F221600213750 /* Supporting Files */,
@@ -159,6 +165,7 @@
 		26E14DE81B5F221600213750 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = CS193p;
 				TargetAttributes = {
@@ -217,7 +224,9 @@
 			files = (
 				26E14E181B5FEA9100213750 /* mainTableViewController.swift in Sources */,
 				26E14DF61B5F221600213750 /* AppDelegate.swift in Sources */,
+				264102131B6477E600CEF7D1 /* AllCurrencyTableViewController.swift in Sources */,
 				26E14E161B5F2DD300213750 /* CurrencyItem.swift in Sources */,
+				26660CB11B68FA9F00E223F3 /* AllCurrencyTableViewDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,6 +422,7 @@
 				26E14E111B5F221600213750 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		26E14E121B5F221600213750 /* Build configuration list for PBXNativeTarget "CurrencyTests" */ = {
 			isa = XCConfigurationList;
@@ -421,6 +431,7 @@
 				26E14E141B5F221600213750 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

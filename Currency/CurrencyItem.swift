@@ -13,20 +13,31 @@ class CurrencyItem {
     let currencyFlatName: String
     let currencyShortName: String
     let currencyFullName: String
-    let currencyPrice: Float
+    let currencyPrice: Double
     
-    var valueForTextField: Float
+    var valueForTextField: Double
     
-    init(flatName: String, shortName: String, fullName: String, price: Float){
-        self.currencyFlatName = flatName
+    init(shortName: String, fullName: String, price: Double){
+        let index: String.Index = advance(shortName.startIndex, 2)
+        self.currencyFlatName = shortName.substringToIndex(index).lowercaseString
         self.currencyShortName = shortName
         self.currencyFullName = fullName
         self.currencyPrice = price
         self.valueForTextField = 100.0
     }
-    
-    func moneyCalculateFromBaseCurrency(baseCurrencyPrice: Float, baseCurrencyTextFieldValue: Float)->Float {
-        return baseCurrencyTextFieldValue / baseCurrencyPrice * self.currencyPrice
-    }
 
+    func checkForEquality(currencyItemList: NSMutableArray) -> Bool {
+        
+        for currencyItem in currencyItemList {
+            
+            if (currencyItem as! CurrencyItem).currencyFullName == self.currencyFullName {
+                
+                return true
+                
+            }
+        }
+        
+        return false
+    }
+    
 }

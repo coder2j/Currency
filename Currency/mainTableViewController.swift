@@ -8,9 +8,12 @@
 
 import UIKit
 
-class mainTableViewController: UITableViewController, UITextFieldDelegate {
+
+class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCurrencyTableViewDelegate {
 
     //MARK: - property
+    
+    
     
     let calculatorCurrencyIdentifier = "Calculator_Currency"
     var notificationCenter: NSNotificationCenter = NSNotificationCenter.defaultCenter()
@@ -18,23 +21,29 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate {
     
     var selectedRow = 0
     var selectedRow_Currency: CurrencyItem!
-    var baseMoneyInUSD: Float!
+    var baseMoneyInUSD: Double!
     
+    let heightForTableViewCell: Int = 85
+    let contentInsetOnTop: Int = 20
+    
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let currencyItem: CurrencyItem = CurrencyItem(flatName: "CN", shortName: "CNY", fullName: "人名币", price: 6.20)
+        let currencyItem: CurrencyItem = CurrencyItem(shortName: "CNY", fullName: "人名币", price: 6.20)
         currencyItemsList.addObject(currencyItem)
         baseMoneyInUSD = 100 / currencyItem.currencyPrice
         
-        let currencyItem_USD: CurrencyItem = CurrencyItem(flatName: "US", shortName: "USD", fullName: "美元", price: 1.00)
+        let currencyItem_USD: CurrencyItem = CurrencyItem(shortName: "USD", fullName: "美元", price: 1.00)
         currencyItemsList.addObject(currencyItem_USD)
         
-        let currencyItem_EUR: CurrencyItem = CurrencyItem(flatName: "EU", shortName: "EUR", fullName: "欧元", price: 0.9)
+        let currencyItem_EUR: CurrencyItem = CurrencyItem(shortName: "EUR", fullName: "欧元", price: 0.9)
         currencyItemsList.addObject(currencyItem_EUR)
-        
-        tableView.contentInset.top = 20
         
         
     }
@@ -51,7 +60,7 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(calculatorCurrencyIdentifier, forIndexPath: indexPath) as! UITableViewCell
-        var currencyForRow = currencyItemsList.objectAtIndex(indexPath.row) as! CurrencyItem
+        let currencyForRow = currencyItemsList.objectAtIndex(indexPath.row) as! CurrencyItem
         updateTableViewCellCustomViews(cell, currencyForRow: currencyForRow, indexPath: indexPath)
         
         return cell
@@ -59,17 +68,16 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate {
     
     func updateTableViewCellCustomViews(cell: UITableViewCell, currencyForRow: CurrencyItem, indexPath: NSIndexPath) {
         
-        var shortName = cell.viewWithTag(200) as! UILabel
+        let shortName = cell.viewWithTag(200) as! UILabel
         shortName.text = currencyForRow.currencyShortName
         
-        var flagName = cell.viewWithTag(100) as! UIImageView
-        let index: String.Index = advance(shortName.text!.startIndex, 2)
-        flagName.image = UIImage(named: shortName.text!.substringToIndex(index).lowercaseString)
+        let flagImageView = cell.viewWithTag(100) as! UIImageView
+        flagImageView.image = UIImage(named: currencyForRow.currencyFlatName)
         
-        var fullName = cell.viewWithTag(300) as! UILabel
+        let fullName = cell.viewWithTag(300) as! UILabel
         fullName.text = currencyForRow.currencyFullName
         
-        var textField = cell.viewWithTag(400) as! UITextField
+        let textField = cell.viewWithTag(400) as! UITextField
         if indexPath.row != selectedRow {
             textField.userInteractionEnabled = false
         }
@@ -85,38 +93,70 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+    
         selectedRow = indexPath.row
         
         let cell: UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
-        var textField = cell.viewWithTag(400) as! UITextField
+        let textField = cell.viewWithTag(400) as! UITextField
+        
         textField.userInteractionEnabled = true
-        textField.placeholder = "100"
-        textField.text = "\(100)"
-        
-        refreshTabelViewCell(textField)
-        
+        textField.placeholder = textField.text //make the origin textfield value as the placeholder
         textField.becomeFirstResponder()
+        notificationCenter.addObserver(self, selector: "textField_Value_Changed:", name: UITextFieldTextDidChangeNotification, object: textField)  //listen to the keyboard, when button is tapped update the money in different currency
         
-        notificationCenter.addObserver(self, selector: "textField_Value_Changed:", name: UITextFieldTextDidChangeNotification, object: textField)
+        // refresh cell incase nothing was input
+        for i in 0..<currencyItemsList.count {
+            let currencyItem = currencyItemsList.objectAtIndex(i) as! CurrencyItem
+            if i != selectedRow {
+                let indexPath: NSIndexPath = NSIndexPath(forRow: i, inSection: 0)
+                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
+            }
+        }
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 85
+        return CGFloat(heightForTableViewCell)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showAllCurrency" {
+            let navigation = segue.destinationViewController as! UINavigationController
+            let add = navigation.topViewController as! AllCurrencyTableViewController
+            add.delegate = self
+        }
+    }
+    
+    func addItemFromAllCurrencyTableViewController(controller: AllCurrencyTableViewController, currencyItem: CurrencyItem) {
+        
+        if currencyItem.checkForEquality(currencyItemsList) == false {
+            currencyItemsList.addObject(currencyItem)
+            let indexPath: NSIndexPath = NSIndexPath(forRow: currencyItemsList.count - 1, inSection: 0)
+            tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
+            controller.dismissViewControllerAnimated(true, completion: nil)
+        } else {
+            let alertView = UIAlertView(title: "警告", message: "货币已经存在", delegate: controller, cancelButtonTitle: "OK")
+            controller.tableView.addSubview(alertView)
+            alertView.show()
+        }
+        
+    }
+    
+    func addItemFromAllCurrencyTableViewControllerDidCancel(controller: AllCurrencyTableViewController) {
+        controller.dismissViewControllerAnimated(true, completion: nil)
     }
     
     //MARK: - custom function
     
     func refreshTabelViewCell(textField: UITextField) {
         selectedRow_Currency = currencyItemsList.objectAtIndex(selectedRow) as! CurrencyItem
-        selectedRow_Currency.valueForTextField = (textField.text as NSString).floatValue
-        print("textField text is \(selectedRow_Currency.valueForTextField)")
+        selectedRow_Currency.valueForTextField = (textField.text as NSString).doubleValue
+        
         baseMoneyInUSD = selectedRow_Currency.valueForTextField / selectedRow_Currency.currencyPrice
         
         for i in 0..<currencyItemsList.count {
-            var currencyItem = currencyItemsList.objectAtIndex(i) as! CurrencyItem
+            let currencyItem = currencyItemsList.objectAtIndex(i) as! CurrencyItem
             if i != selectedRow {
                 currencyItem.valueForTextField = baseMoneyInUSD * currencyItem.currencyPrice
                 let indexPath: NSIndexPath = NSIndexPath(forRow: i, inSection: 0)
@@ -126,8 +166,7 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate {
     }
 
     func textField_Value_Changed(notification: NSNotification) {
-        var textField: UITextField = notification.object as! UITextField
-        print("text is \(textField.text)")
+        let textField: UITextField = notification.object as! UITextField
         textField.delegate = self
         refreshTabelViewCell(textField)
     }
