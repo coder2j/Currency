@@ -20,7 +20,7 @@ class AllCurrencyTableViewController: UITableViewController {
         let currency: CurrencyItem = CurrencyItem(shortName: "HKD", fullName: "港币", price: 7.0)
         allCurrencyItemList.addObject(currency)
         
-        let currencyItem: CurrencyItem = CurrencyItem(shortName: "CNY", fullName: "人名币", price: 6.20)
+        let currencyItem: CurrencyItem = CurrencyItem(shortName: "CNY", fullName: "人民币", price: 6.20)
         allCurrencyItemList.addObject(currencyItem)
         
         

@@ -35,7 +35,7 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let currencyItem: CurrencyItem = CurrencyItem(shortName: "CNY", fullName: "人名币", price: 6.20)
+        let currencyItem: CurrencyItem = CurrencyItem(shortName: "CNY", fullName: "人民币", price: 6.20)
         currencyItemsList.addObject(currencyItem)
         baseMoneyInUSD = 100 / currencyItem.currencyPrice
         

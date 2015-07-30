@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		264102131B6477E600CEF7D1 /* AllCurrencyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264102121B6477E600CEF7D1 /* AllCurrencyTableViewController.swift */; };
 		26660CB11B68FA9F00E223F3 /* AllCurrencyTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26660CB01B68FA9F00E223F3 /* AllCurrencyTableViewDelegate.swift */; };
+		26660CB31B69274000E223F3 /* DownloadCurrencyDataFromYahooFinanceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26660CB21B69274000E223F3 /* DownloadCurrencyDataFromYahooFinanceAPI.swift */; };
 		26E14DF61B5F221600213750 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E14DF51B5F221600213750 /* AppDelegate.swift */; };
 		26E14DFB1B5F221600213750 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26E14DF91B5F221600213750 /* Main.storyboard */; };
 		26E14DFD1B5F221600213750 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26E14DFC1B5F221600213750 /* Images.xcassets */; };
@@ -16,6 +17,7 @@
 		26E14E0C1B5F221600213750 /* CurrencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E14E0B1B5F221600213750 /* CurrencyTests.swift */; };
 		26E14E161B5F2DD300213750 /* CurrencyItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E14E151B5F2DD300213750 /* CurrencyItem.swift */; };
 		26E14E181B5FEA9100213750 /* mainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E14E171B5FEA9100213750 /* mainTableViewController.swift */; };
+		9156124514F3580D837EC7D7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C56DB86DDB1A5585EFE551DE /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +33,7 @@
 /* Begin PBXFileReference section */
 		264102121B6477E600CEF7D1 /* AllCurrencyTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllCurrencyTableViewController.swift; sourceTree = "<group>"; };
 		26660CB01B68FA9F00E223F3 /* AllCurrencyTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllCurrencyTableViewDelegate.swift; sourceTree = "<group>"; };
+		26660CB21B69274000E223F3 /* DownloadCurrencyDataFromYahooFinanceAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadCurrencyDataFromYahooFinanceAPI.swift; sourceTree = "<group>"; };
 		26E14DF01B5F221600213750 /* Currency.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Currency.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26E14DF41B5F221600213750 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		26E14DF51B5F221600213750 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -42,6 +45,9 @@
 		26E14E0B1B5F221600213750 /* CurrencyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTests.swift; sourceTree = "<group>"; };
 		26E14E151B5F2DD300213750 /* CurrencyItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyItem.swift; sourceTree = "<group>"; };
 		26E14E171B5FEA9100213750 /* mainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainTableViewController.swift; sourceTree = "<group>"; };
+		AA542A2A22448BDBF282BA8C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		B8F7B59ED2F3B5C7710D8D2F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		C56DB86DDB1A5585EFE551DE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9156124514F3580D837EC7D7 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,12 +69,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		117F0BBF6A92A1DFD8955A9B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AA542A2A22448BDBF282BA8C /* Pods.debug.xcconfig */,
+				B8F7B59ED2F3B5C7710D8D2F /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		26E14DE71B5F221600213750 = {
 			isa = PBXGroup;
 			children = (
 				26E14DF21B5F221600213750 /* Currency */,
 				26E14E081B5F221600213750 /* CurrencyTests */,
 				26E14DF11B5F221600213750 /* Products */,
+				117F0BBF6A92A1DFD8955A9B /* Pods */,
+				F81DE93CBA1EF80D476E166C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,6 +103,7 @@
 			children = (
 				26E14DF51B5F221600213750 /* AppDelegate.swift */,
 				26E14E171B5FEA9100213750 /* mainTableViewController.swift */,
+				26660CB21B69274000E223F3 /* DownloadCurrencyDataFromYahooFinanceAPI.swift */,
 				26E14E151B5F2DD300213750 /* CurrencyItem.swift */,
 				26E14DF91B5F221600213750 /* Main.storyboard */,
 				264102121B6477E600CEF7D1 /* AllCurrencyTableViewController.swift */,
@@ -121,6 +140,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		F81DE93CBA1EF80D476E166C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C56DB86DDB1A5585EFE551DE /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -128,9 +155,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 26E14E0F1B5F221600213750 /* Build configuration list for PBXNativeTarget "Currency" */;
 			buildPhases = (
+				576D43FF1382AA0F4683CB91 /* Check Pods Manifest.lock */,
 				26E14DEC1B5F221600213750 /* Sources */,
 				26E14DED1B5F221600213750 /* Frameworks */,
 				26E14DEE1B5F221600213750 /* Resources */,
+				E11CEA031E350ED586E29E10 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -217,6 +246,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		576D43FF1382AA0F4683CB91 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		E11CEA031E350ED586E29E10 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		26E14DEC1B5F221600213750 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -225,6 +287,7 @@
 				26E14E181B5FEA9100213750 /* mainTableViewController.swift in Sources */,
 				26E14DF61B5F221600213750 /* AppDelegate.swift in Sources */,
 				264102131B6477E600CEF7D1 /* AllCurrencyTableViewController.swift in Sources */,
+				26660CB31B69274000E223F3 /* DownloadCurrencyDataFromYahooFinanceAPI.swift in Sources */,
 				26E14E161B5F2DD300213750 /* CurrencyItem.swift in Sources */,
 				26660CB11B68FA9F00E223F3 /* AllCurrencyTableViewDelegate.swift in Sources */,
 			);
@@ -351,6 +414,7 @@
 		};
 		26E14E101B5F221600213750 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AA542A2A22448BDBF282BA8C /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Currency/Info.plist;
@@ -361,6 +425,7 @@
 		};
 		26E14E111B5F221600213750 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B8F7B59ED2F3B5C7710D8D2F /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Currency/Info.plist;

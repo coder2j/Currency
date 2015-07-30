@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>957A6F3D-E911-4836-AF15-4EC8D13436D0</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Currency</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>3D0FE4354A7F4D669A5C80A1E4871340F88D6D03</key>
+		<string>https://github.com/JummyHuang/Currency.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Currency.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>3D0FE4354A7F4D669A5C80A1E4871340F88D6D03</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/JummyHuang/Currency.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>3D0FE4354A7F4D669A5C80A1E4871340F88D6D03</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>3D0FE4354A7F4D669A5C80A1E4871340F88D6D03</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Currency</string>
+		</dict>
+	</array>
+</dict>
+</plist>
