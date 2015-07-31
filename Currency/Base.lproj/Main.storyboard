@@ -27,18 +27,8 @@
                                                 <constraint firstAttribute="height" constant="65" id="F6Z-wx-v5F"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="300" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FullName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="em4-or-VGl">
-                                            <rect key="frame" x="8" y="63" width="110" height="12"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="12" id="PFV-wk-7tj"/>
-                                                <constraint firstAttribute="width" constant="110" id="d9u-QX-t2g"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="200" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ABC" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcs-9B-OHr">
-                                            <rect key="frame" x="8" y="22" width="42" height="21"/>
+                                            <rect key="frame" x="16" y="21" width="42" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="42" id="Ml3-cT-qv0"/>
                                                 <constraint firstAttribute="height" constant="21" id="OLo-ga-NXf"/>
@@ -47,13 +37,23 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="300" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bosnia-Herzegovina Convertible Mark" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="em4-or-VGl">
+                                            <rect key="frame" x="16" y="56" width="214" height="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="16" id="3kO-Pj-MTo"/>
+                                                <constraint firstAttribute="width" constant="214" id="DsQ-OH-4HH"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="q3S-Rb-R4J" secondAttribute="trailing" constant="8" id="1x4-uH-jld"/>
-                                        <constraint firstItem="em4-or-VGl" firstAttribute="leading" secondItem="lpT-Mo-4w0" secondAttribute="leading" constant="8" id="FWD-Hc-lGd"/>
-                                        <constraint firstAttribute="bottom" secondItem="em4-or-VGl" secondAttribute="bottom" constant="9.5" id="SxJ-Gh-5Ba"/>
-                                        <constraint firstItem="bcs-9B-OHr" firstAttribute="leading" secondItem="lpT-Mo-4w0" secondAttribute="leading" constant="8" id="ocy-dm-ShX"/>
-                                        <constraint firstItem="bcs-9B-OHr" firstAttribute="top" secondItem="lpT-Mo-4w0" secondAttribute="top" constant="22" id="tsW-Gd-K8y"/>
+                                        <constraint firstItem="em4-or-VGl" firstAttribute="top" secondItem="lpT-Mo-4w0" secondAttribute="top" constant="56" id="6Nv-f1-yDD"/>
+                                        <constraint firstItem="em4-or-VGl" firstAttribute="leading" secondItem="lpT-Mo-4w0" secondAttribute="leading" constant="16" id="OQ2-B8-iEC"/>
+                                        <constraint firstItem="bcs-9B-OHr" firstAttribute="leading" secondItem="lpT-Mo-4w0" secondAttribute="leading" constant="16" id="k5N-ON-La6"/>
+                                        <constraint firstItem="bcs-9B-OHr" firstAttribute="top" secondItem="lpT-Mo-4w0" secondAttribute="top" constant="21" id="tsW-Gd-K8y"/>
                                         <constraint firstItem="q3S-Rb-R4J" firstAttribute="top" secondItem="lpT-Mo-4w0" secondAttribute="top" constant="10" id="zge-sg-E0V"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -74,7 +74,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fpk-3S-QYf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4109" y="-82"/>
+            <point key="canvasLocation" x="3793" y="-71"/>
         </scene>
         <!--Currency-->
         <scene sceneID="7lf-HS-CDU">
@@ -91,10 +91,10 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="200" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ABC" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mb5-aA-I8b">
-                                            <rect key="frame" x="80" y="32" width="36" height="21"/>
+                                            <rect key="frame" x="80" y="32" width="45" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="3i3-Kk-1bC"/>
-                                                <constraint firstAttribute="width" constant="36" id="II0-OL-xtX"/>
+                                                <constraint firstAttribute="width" constant="45" id="II0-OL-xtX"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -117,11 +117,11 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                             <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                         </textField>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="300" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fullname" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alz-Vt-3CW">
-                                            <rect key="frame" x="488" y="60" width="104" height="15"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="300" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bosnia-Herzegovina Convertible Mark" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alz-Vt-3CW">
+                                            <rect key="frame" x="377" y="60" width="215" height="15"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="15" id="TP9-G8-HP4"/>
-                                                <constraint firstAttribute="width" constant="104" id="pnM-W6-llH"/>
+                                                <constraint firstAttribute="width" constant="215" id="pnM-W6-llH"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -192,7 +192,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rMX-5e-fa8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3345" y="-11"/>
+            <point key="canvasLocation" x="3198" y="-11"/>
         </scene>
     </scenes>
 </document>

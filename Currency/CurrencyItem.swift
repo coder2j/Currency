@@ -10,10 +10,10 @@ import Foundation
 
 class CurrencyItem {
     
-    let currencyFlatName: String
-    let currencyShortName: String
-    let currencyFullName: String
-    let currencyPrice: Double
+    var currencyFlatName: String
+    var currencyShortName: String
+    var currencyFullName: String
+    var currencyPrice: Double
     
     var valueForTextField: Double
     

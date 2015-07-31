@@ -52,11 +52,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Currency/mainTableViewController.swift"
-            timestampString = "459869431.007289"
+            timestampString = "460013003.083898"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
             landmarkName = "mainTableViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -68,11 +68,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Currency/mainTableViewController.swift"
-            timestampString = "459869431.007289"
+            timestampString = "460056079.607954"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
+            startingLineNumber = "156"
+            endingLineNumber = "156"
             landmarkName = "updateTableViewCellCustomViews(_:currencyForRow:indexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -84,7 +84,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Currency/mainTableViewController.swift"
-            timestampString = "459865819.866026"
+            timestampString = "459959166.520844"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "37"
@@ -100,11 +100,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Currency/mainTableViewController.swift"
-            timestampString = "459869431.007289"
+            timestampString = "460056079.607954"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
             landmarkName = "updateTableViewCellCustomViews(_:currencyForRow:indexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -116,11 +116,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Currency/mainTableViewController.swift"
-            timestampString = "459875334.831451"
+            timestampString = "460056079.607954"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "170"
-            endingLineNumber = "170"
+            startingLineNumber = "248"
+            endingLineNumber = "248"
             landmarkName = "textField_Value_Changed(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -132,11 +132,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Currency/mainTableViewController.swift"
-            timestampString = "459875222.453168"
+            timestampString = "460056079.607954"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "170"
-            endingLineNumber = "170"
+            startingLineNumber = "248"
+            endingLineNumber = "248"
             landmarkName = "textField_Value_Changed(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -148,11 +148,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Currency/mainTableViewController.swift"
-            timestampString = "459875334.831451"
+            timestampString = "460056079.607954"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
             landmarkName = "textFieldShouldReturn(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -164,11 +164,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Currency/mainTableViewController.swift"
-            timestampString = "459875222.453168"
+            timestampString = "460056079.607954"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
+            startingLineNumber = "194"
+            endingLineNumber = "194"
             landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -196,11 +196,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Currency/mainTableViewController.swift"
-            timestampString = "459875385.090842"
+            timestampString = "460056079.607954"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
+            startingLineNumber = "240"
+            endingLineNumber = "240"
             landmarkName = "refreshTabelViewCell(_:)"
             landmarkType = "5">
          </BreakpointContent>
