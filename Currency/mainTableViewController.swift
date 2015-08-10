@@ -135,6 +135,11 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
                     for currencyItem in self.allCurrencyItemList {
                         if currencyItem.currencyShortName == shortName {
                             currencyItem.currencyPrice = price.doubleValue
+                            if currencyItem.currencyShortName == "CNY" {
+                                self.currencyItemsList.append(currencyItem)
+                                self.baseMoneyInUSD = currencyItem.valueForTextField / currencyItem.currencyPrice
+                                self.tableView.reloadData()
+                            }
                         }
                     }
                 }

@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Currency/mainTableViewController.swift"
-            timestampString = "460914436.892547"
+            timestampString = "460919489.616579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
+            startingLineNumber = "208"
+            endingLineNumber = "208"
             landmarkName = "updateTableViewCellCustomViews(_:currencyForRow:indexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Currency/mainTableViewController.swift"
-            timestampString = "460913860.169945"
+            timestampString = "460919489.616579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
             landmarkName = "pepareCurrencyData()"
             landmarkType = "5">
          </BreakpointContent>
@@ -246,7 +246,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Currency/mainTableViewController.swift"
@@ -259,34 +259,34 @@
             landmarkType = "5">
             <Locations>
                <Location
-                  shouldBeEnabled = "No"
+                  shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "Currency.mainTableViewController.locationManager (Currency.mainTableViewController)(Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.CLLocationManager&gt;, didUpdateLocations : Swift.ImplicitlyUnwrappedOptional&lt;Swift.Array&lt;Swift.AnyObject&gt;&gt;) -&gt; ()"
                   moduleName = "Currency"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/huangjunming/CS193p/Developer/Swift%20Project/Currency/Currency/mainTableViewController.swift"
-                  timestampString = "460912250.532595"
+                  timestampString = "460919502.416371"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "61"
-                  endingLineNumber = "61"
-                  offsetFromSymbolStart = "24">
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "23">
                </Location>
                <Location
-                  shouldBeEnabled = "No"
+                  shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "Currency.mainTableViewController.(locationManager (Currency.mainTableViewController) -&gt; (Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.CLLocationManager&gt;, didUpdateLocations : Swift.ImplicitlyUnwrappedOptional&lt;Swift.Array&lt;Swift.AnyObject&gt;&gt;) -&gt; ()).(closure #1)"
                   moduleName = "Currency"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/huangjunming/CS193p/Developer/Swift%20Project/Currency/Currency/mainTableViewController.swift"
-                  timestampString = "460912250.532777"
+                  timestampString = "460919502.416567"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "62"
-                  endingLineNumber = "62"
-                  offsetFromSymbolStart = "32">
+                  startingLineNumber = "65"
+                  endingLineNumber = "65"
+                  offsetFromSymbolStart = "27">
                </Location>
             </Locations>
          </BreakpointContent>
