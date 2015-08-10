@@ -25,8 +25,9 @@ class CurrencyItem {
         self.currencyPrice = price
         self.valueForTextField = 100.0
     }
+    
 
-    func checkForEquality(currencyItemList: NSMutableArray) -> Bool {
+    func checkForEquality(currencyItemList: NSArray) -> Bool {
         
         for currencyItem in currencyItemList {
             

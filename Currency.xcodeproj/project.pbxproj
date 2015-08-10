@@ -9,7 +9,10 @@
 /* Begin PBXBuildFile section */
 		264102131B6477E600CEF7D1 /* AllCurrencyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264102121B6477E600CEF7D1 /* AllCurrencyTableViewController.swift */; };
 		26660CB11B68FA9F00E223F3 /* AllCurrencyTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26660CB01B68FA9F00E223F3 /* AllCurrencyTableViewDelegate.swift */; };
-		26660CB31B69274000E223F3 /* DownloadCurrencyDataFromYahooFinanceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26660CB21B69274000E223F3 /* DownloadCurrencyDataFromYahooFinanceAPI.swift */; };
+		26660CB31B69274000E223F3 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26660CB21B69274000E223F3 /* DataManager.swift */; };
+		2666473C1B782F0D00A7FA45 /* currencies.json in Resources */ = {isa = PBXBuildFile; fileRef = 2666473B1B782F0D00A7FA45 /* currencies.json */; };
+		2666473E1B782F2800A7FA45 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2666473D1B782F2800A7FA45 /* SwiftyJSON.swift */; };
+		2692FF091B78E87800551276 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2692FF081B78E87800551276 /* CoreLocation.framework */; };
 		26E14DF61B5F221600213750 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E14DF51B5F221600213750 /* AppDelegate.swift */; };
 		26E14DFB1B5F221600213750 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26E14DF91B5F221600213750 /* Main.storyboard */; };
 		26E14DFD1B5F221600213750 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26E14DFC1B5F221600213750 /* Images.xcassets */; };
@@ -33,7 +36,10 @@
 /* Begin PBXFileReference section */
 		264102121B6477E600CEF7D1 /* AllCurrencyTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllCurrencyTableViewController.swift; sourceTree = "<group>"; };
 		26660CB01B68FA9F00E223F3 /* AllCurrencyTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllCurrencyTableViewDelegate.swift; sourceTree = "<group>"; };
-		26660CB21B69274000E223F3 /* DownloadCurrencyDataFromYahooFinanceAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadCurrencyDataFromYahooFinanceAPI.swift; sourceTree = "<group>"; };
+		26660CB21B69274000E223F3 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		2666473B1B782F0D00A7FA45 /* currencies.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = currencies.json; sourceTree = "<group>"; };
+		2666473D1B782F2800A7FA45 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		2692FF081B78E87800551276 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		26E14DF01B5F221600213750 /* Currency.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Currency.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26E14DF41B5F221600213750 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		26E14DF51B5F221600213750 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -55,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2692FF091B78E87800551276 /* CoreLocation.framework in Frameworks */,
 				ED32067D7F7CF44CB81D1B37 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -101,9 +108,11 @@
 		26E14DF21B5F221600213750 /* Currency */ = {
 			isa = PBXGroup;
 			children = (
+				2666473D1B782F2800A7FA45 /* SwiftyJSON.swift */,
+				2666473B1B782F0D00A7FA45 /* currencies.json */,
 				26E14DF51B5F221600213750 /* AppDelegate.swift */,
 				26E14E171B5FEA9100213750 /* mainTableViewController.swift */,
-				26660CB21B69274000E223F3 /* DownloadCurrencyDataFromYahooFinanceAPI.swift */,
+				26660CB21B69274000E223F3 /* DataManager.swift */,
 				26E14E151B5F2DD300213750 /* CurrencyItem.swift */,
 				26E14DF91B5F221600213750 /* Main.storyboard */,
 				264102121B6477E600CEF7D1 /* AllCurrencyTableViewController.swift */,
@@ -143,6 +152,7 @@
 		F81DE93CBA1EF80D476E166C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2692FF081B78E87800551276 /* CoreLocation.framework */,
 				F8FC763879852ED170BF12B1 /* Pods.framework */,
 			);
 			name = Frameworks;
@@ -234,6 +244,7 @@
 			files = (
 				26E14DFB1B5F221600213750 /* Main.storyboard in Resources */,
 				26E14E001B5F221600213750 /* LaunchScreen.xib in Resources */,
+				2666473C1B782F0D00A7FA45 /* currencies.json in Resources */,
 				26E14DFD1B5F221600213750 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,8 +314,9 @@
 				26E14E181B5FEA9100213750 /* mainTableViewController.swift in Sources */,
 				26E14DF61B5F221600213750 /* AppDelegate.swift in Sources */,
 				264102131B6477E600CEF7D1 /* AllCurrencyTableViewController.swift in Sources */,
-				26660CB31B69274000E223F3 /* DownloadCurrencyDataFromYahooFinanceAPI.swift in Sources */,
+				26660CB31B69274000E223F3 /* DataManager.swift in Sources */,
 				26E14E161B5F2DD300213750 /* CurrencyItem.swift in Sources */,
+				2666473E1B782F2800A7FA45 /* SwiftyJSON.swift in Sources */,
 				26660CB11B68FA9F00E223F3 /* AllCurrencyTableViewDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

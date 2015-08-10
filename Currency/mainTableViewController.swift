@@ -7,119 +7,156 @@
 //
 
 import UIKit
+import CoreLocation
 import Alamofire
 
-class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCurrencyTableViewDelegate {
+class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCurrencyTableViewDelegate, CLLocationManagerDelegate {
 
     //MARK: - property
     
     let calculatorCurrencyIdentifier = "Calculator_Currency"
     var notificationCenter: NSNotificationCenter = NSNotificationCenter.defaultCenter()
-    var currencyItemsList: NSMutableArray = []
+    var currencyItemsList = [CurrencyItem]()
+    var allCurrencyItemList = [CurrencyItem]()
     
     var selectedRow = 0
     var selectedRow_Currency: CurrencyItem!
     var baseMoneyInUSD: Double!
     
     let heightForTableViewCell: Int = 85
-    let contentInsetOnTop: Int = 20
     
-    let downloadCurrencyData = DownloadCurrencyDataFromYahooFinanceAPI()
+    let locationManager = CLLocationManager()
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(true)
-        
-    }
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
         
         pepareCurrencyData()
         
+        var refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        
+        self.refreshControl = refreshControl
         
     }
     
-    func pepareCurrencyData() {
-        if currencyItemsList.count == 0 {
-            let currencyItem: CurrencyItem = CurrencyItem(shortName: "CNY", fullName: "Chinese Yuan", price: 1.0)
-            currencyItemsList.addObject(currencyItem)
-        }
-        
-        var allCurrencyList: NSMutableArray = getCurrencyDataFromAPIURL()
-        updateCurrencyPriceInArray(currencyItemsList, allCurrencyItemList: allCurrencyList)
-        baseMoneyInUSD = (currencyItemsList.objectAtIndex(0) as! CurrencyItem).valueForTextField / (currencyItemsList.objectAtIndex(0) as! CurrencyItem).currencyPrice
-    
-    }
-    
-    func getCurrencyDataFromAPIURL() -> NSMutableArray {
-        
-        var currencyList: NSMutableArray = []
-        
-        Alamofire.request(.GET, "http://finance.yahoo.com/webservice/v1/symbols/allcurrencies/quote?format=json").responseJSON { _, _, JSON, _ in
-            
-            
-            let jsonDataArray: NSArray = JSON?.objectForKey("list")?.objectForKey("resources") as! NSArray
-            
-            // print("jsonDataArray is \(jsonDataArray)")
-            
-            var currencyPrice: Double
-            var currencyShortName: String
-            
-            for jsonDataResource in jsonDataArray {
-                let jsonDataFieldinResource: NSDictionary = (jsonDataResource as! NSDictionary).objectForKey("resource")!.objectForKey("fields") as! NSDictionary
+    func getCurrencyInLocation(countryCode: String) {
+        for currencyItem in allCurrencyItemList {
+            if currencyItem.currencyFlatName == countryCode.lowercaseString {
                 
-                // print(jsonDataFieldinResource)
+                if currencyItem.checkForEquality(currencyItemsList) == false {
+                    currencyItemsList.append(currencyItem)
+                    baseMoneyInUSD = currencyItem.valueForTextField / currencyItem.currencyPrice
+                    self.tableView.reloadData()
+                }
                 
-                currencyShortName = jsonDataFieldinResource.objectForKey("symbol") as! String
-                let index: String.Index = advance(currencyShortName.startIndex, 3)
-                currencyShortName = currencyShortName.substringToIndex(index)
-                
-                currencyPrice = (jsonDataFieldinResource.objectForKey("price") as! NSString).doubleValue
-                let currencyItem: CurrencyItem = CurrencyItem(shortName: currencyShortName, fullName: "", price: currencyPrice)
-                currencyList.addObject(currencyItem)
             }
-            
         }
-        
-        Alamofire.request(.GET, "http://openexchangerates.org/currencies.json").responseJSON { _, _, JSON, error in
-            
+    }
+    
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: { (placemarks, error) -> Void in
             if error == nil {
+                self.locationManager.stopUpdatingLocation()
+                print("got \n")
                 
-                let currencyNamesDict: NSDictionary = JSON as! NSDictionary
-                var currencyFullName: String
-                for (key, objectForKey) in currencyNamesDict {
-                    var shortName: String = key as! String
-                    var fullName: String = objectForKey as! String
+                if let pm = placemarks[0] as? CLPlacemark {
                     
-                    for i in 0..<currencyList.count {
-                        var currencyItem: CurrencyItem = currencyList.objectAtIndex(i) as! CurrencyItem
+                    self.getCurrencyInLocation(pm.ISOcountryCode)
+                }
+                
+                
+            } else {
+                print(error)
+            }
+        })
+    }
+    
+    func refresh(sender: AnyObject) {
+        
+        var isRefreshSucceed = false
+        
+        DataManager.getCurrencyDataFromAPIURLWithSuccess{(yahooData) -> Void in
+            
+            let jsonData = JSON(yahooData)
+            
+            let start = NSDate()
+            
+            if let currencyDict = jsonData["rates"].dictionary {
+                for (shortName, price) in currencyDict {
+                    for currencyItem in self.currencyItemsList {
                         if currencyItem.currencyShortName == shortName {
-                            currencyItem.currencyFullName = fullName
+                            currencyItem.currencyPrice = price.doubleValue
                         }
                     }
                 }
                 
+                let end = NSDate()
+                let timeTravel = end.timeIntervalSinceDate(end)
+                print("refresh time is\(timeTravel)")
+            }
+            
+            self.refreshControl?.endRefreshing()
+            self.tableView.reloadData()
+            
+        }
+        
+    }
+    
+    func pepareCurrencyData() {
+        
+        if currencyItemsList.count == 0 {
+            locationManager.startUpdatingLocation()
+        }
+        
+        DataManager.getTopAppsDataFromFileWithSuccess{(data) -> Void in
+            
+            let dictionay: Dictionary = JSON(data:data).dictionary!
+            
+            for (shortName, fullName) in dictionay {
+                
+                var currency = CurrencyItem(shortName: shortName, fullName: fullName.string!, price: 1)
+                self.allCurrencyItemList.append(currency)
+            }
+            self.allCurrencyItemList = self.allCurrencyItemList.sorted {$0.currencyShortName < $1.currencyShortName}
+        }
+        
+        DataManager.getCurrencyDataFromAPIURLWithSuccess{(yahooData: AnyObject) -> Void in
+            let jsonData = JSON(yahooData)
+        
+            if let currencyDict = jsonData["rates"].dictionary {
+                for (shortName, price) in currencyDict {
+                    for currencyItem in self.allCurrencyItemList {
+                        if currencyItem.currencyShortName == shortName {
+                            currencyItem.currencyPrice = price.doubleValue
+                        }
+                    }
+                }
             }
             
         }
         
-        return currencyList
-        
     }
     
-    func updateCurrencyPriceInArray(list: NSMutableArray, allCurrencyItemList: NSMutableArray) {
+    
+    func updateCurrencyPriceInArray(currencyItem: CurrencyItem, allCurrencyItemList: NSArray) {
         
-        for i in 0..<list.count {
-            var itemInList: CurrencyItem = list.objectAtIndex(i) as! CurrencyItem
-            for j in 0..<allCurrencyItemList.count {
-                let itemInCurrencyList: CurrencyItem = allCurrencyItemList.objectAtIndex(j) as! CurrencyItem
-                
-                if itemInList.currencyShortName == itemInCurrencyList.currencyShortName {
-                    itemInList.currencyPrice = itemInCurrencyList.currencyPrice
-                }
+        for i in 0..<allCurrencyItemList.count {
+            let itemInCurrencyList: CurrencyItem = allCurrencyItemList[i] as! CurrencyItem
+            
+            if currencyItem.currencyShortName == itemInCurrencyList.currencyShortName {
+                currencyItem.currencyPrice = itemInCurrencyList.currencyPrice
             }
         }
+
     }
+
     
     
     //MARK: - tableViewDelegate
@@ -134,13 +171,18 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(calculatorCurrencyIdentifier, forIndexPath: indexPath) as! UITableViewCell
-        let currencyForRow = currencyItemsList.objectAtIndex(indexPath.row) as! CurrencyItem
+        let currencyForRow = currencyItemsList[indexPath.row]
         updateTableViewCellCustomViews(cell, currencyForRow: currencyForRow, indexPath: indexPath)
         
         return cell
     }
     
     func updateTableViewCellCustomViews(cell: UITableViewCell, currencyForRow: CurrencyItem, indexPath: NSIndexPath) {
+        
+        if indexPath.row == 0 {
+            let imageView = cell.viewWithTag(10) as! UIImageView
+            imageView.image = UIImage(named: "location")
+        }
         
         let shortName = cell.viewWithTag(200) as! UILabel
         shortName.text = currencyForRow.currencyShortName
@@ -164,8 +206,16 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
         textField.text = String(format: "%.2f", currencyForRow.valueForTextField)
     }
     
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if indexPath.row == 0 {
+            return false
+        } else {
+            return true
+        }
+    }
+    
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        currencyItemsList.removeObjectAtIndex(indexPath.row)
+        currencyItemsList.removeAtIndex(indexPath.row)
         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
         
     }
@@ -184,7 +234,7 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
         
         // refresh cell incase nothing was input
         for i in 0..<currencyItemsList.count {
-            let currencyItem = currencyItemsList.objectAtIndex(i) as! CurrencyItem
+            let currencyItem = currencyItemsList[i]
             if i != selectedRow {
                 let indexPath: NSIndexPath = NSIndexPath(forRow: i, inSection: 0)
                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
@@ -209,7 +259,8 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
     func addItemFromAllCurrencyTableViewController(controller: AllCurrencyTableViewController, currencyItem: CurrencyItem) {
         
         if currencyItem.checkForEquality(currencyItemsList) == false {
-            currencyItemsList.addObject(currencyItem)
+            updateCurrencyPriceInArray(currencyItem, allCurrencyItemList: allCurrencyItemList)
+            currencyItemsList.append(currencyItem)
             let indexPath: NSIndexPath = NSIndexPath(forRow: currencyItemsList.count - 1, inSection: 0)
             tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
             controller.dismissViewControllerAnimated(true, completion: nil)
@@ -228,13 +279,13 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
     //MARK: - custom function
     
     func refreshTabelViewCell(textField: UITextField) {
-        selectedRow_Currency = currencyItemsList.objectAtIndex(selectedRow) as! CurrencyItem
+        selectedRow_Currency = currencyItemsList[selectedRow]
         selectedRow_Currency.valueForTextField = (textField.text as NSString).doubleValue
         
         baseMoneyInUSD = selectedRow_Currency.valueForTextField / selectedRow_Currency.currencyPrice
         
         for i in 0..<currencyItemsList.count {
-            let currencyItem = currencyItemsList.objectAtIndex(i) as! CurrencyItem
+            let currencyItem = currencyItemsList[i]
             if i != selectedRow {
                 currencyItem.valueForTextField = baseMoneyInUSD * currencyItem.currencyPrice
                 let indexPath: NSIndexPath = NSIndexPath(forRow: i, inSection: 0)
