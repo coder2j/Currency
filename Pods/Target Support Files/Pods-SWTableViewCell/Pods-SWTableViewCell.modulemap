@@ -1,0 +1,6 @@
+framework module SWTableViewCell {
+  umbrella header "Pods-SWTableViewCell-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -28,7 +28,7 @@ class AllCurrencyTableViewController: UITableViewController {
     }
     
     func perpareData() {
-        DataManager.getTopAppsDataFromFileWithSuccess { (data) -> Void in
+        DataManager.getTopAppsDataFromFileWithSuccess("currencies") { (data) -> Void in
             
             let dictionay: Dictionary = JSON(data:data).dictionary!
             

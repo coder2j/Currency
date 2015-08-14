@@ -14,8 +14,9 @@ class CurrencyItem {
     var currencyShortName: String
     var currencyFullName: String
     var currencyPrice: Double
-    
     var valueForTextField: Double
+    var isAdded: Bool
+    var isFavorited: Bool
     
     init(shortName: String, fullName: String, price: Double){
         let index: String.Index = advance(shortName.startIndex, 2)
@@ -24,6 +25,8 @@ class CurrencyItem {
         self.currencyFullName = fullName
         self.currencyPrice = price
         self.valueForTextField = 100.0
+        self.isAdded = false
+        self.isFavorited = false
     }
     
 

@@ -14,11 +14,11 @@ let openExchange = "https://openexchangerates.org/api/latest.json?app_id=000ecc9
 
 class DataManager {
    
-    class func getTopAppsDataFromFileWithSuccess(success: ((data: NSData) -> Void)) {
+    class func getTopAppsDataFromFileWithSuccess(jsonDocName: String,success: ((data: NSData) -> Void)) {
         //1
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             //2
-            let filePath = NSBundle.mainBundle().pathForResource("currencies",ofType:"json")
+            let filePath = NSBundle.mainBundle().pathForResource(jsonDocName,ofType:"json")
             
             var readError: NSError?
             if let data = NSData(contentsOfFile:filePath!, options: NSDataReadingOptions.DataReadingUncached, error:&readError) {
