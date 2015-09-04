@@ -8,17 +8,21 @@
 
 import UIKit
 import Alamofire
+import CoreData
+import SWTableViewCell
 
 class AllCurrencyTableViewController: UITableViewController {
 
     var delegate: AllCurrencyTableViewDelegate?
     
     let cellIdentifier: String = "AllCurrency"
-    var allCurrencyItemList = [CurrencyItem]()
-    var likedCurrencyItemList = [CurrencyItem]()
+    var allCurrencyItemList = [NSManagedObject]()
+    var likedCurrencyItemList = [NSManagedObject]()
     
-    var jsonDataFromYahoo: NSDictionary = NSDictionary()
-    var currencyNamesDict: NSDictionary = NSDictionary()
+    var allCurrencyItemArray = [CurrencyItem]()
+    
+    
+    let managedContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,31 +31,111 @@ class AllCurrencyTableViewController: UITableViewController {
     
     }
     
-    func perpareData() {
-        DataManager.getTopAppsDataFromFileWithSuccess("currencies") { (data) -> Void in
+    func fetchDataFromDatabase() -> Bool {
+        
+        var fetchRequest = NSFetchRequest(entityName: "AllCurrencyItem")
+        var sortDescirptor = NSSortDescriptor(key: "shortName", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescirptor]
+
+        var error: NSError?
+        
+        let fetchedResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as? [NSManagedObject]
+        
+        if fetchedResults?.count > 0 {
+            allCurrencyItemList = fetchedResults!
             
-            let dictionay: Dictionary = JSON(data:data).dictionary!
+            //likedCurrencyItemList
+            fetchRequest = NSFetchRequest(entityName: "LikedCurrencyItem")
+            let fetchedLikedResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as? [NSManagedObject]
             
-            var allCurrencyArray = [CurrencyItem]()
-            var likedCurrencyArray = [CurrencyItem]()
-            
-            for (shortName, fullName) in dictionay {
-                
-                var currency = CurrencyItem(shortName: shortName, fullName: fullName.string!, price: 1)
-                allCurrencyArray.append(currency)
-                
-                if shortName == "CNY" || shortName == "EUR" || shortName == "USD" {
-                    likedCurrencyArray.append(currency)
+            if fetchedLikedResults?.count > 0 {
+                likedCurrencyItemList = fetchedLikedResults!
+            } else {
+                for i in 0..<allCurrencyItemList.count {
+                    var shortName = ""
+                    shortName = allCurrencyItemList[i].valueForKey("shortName") as! String
+                    if shortName == "CNY" || shortName == "USD" || shortName == "EUR" || shortName == "JPY" {
+                        likedCurrencyItemList.append(allCurrencyItemList[i])
+                    }
                 }
             }
             
-            self.allCurrencyItemList = allCurrencyArray.sorted {$0.currencyShortName < $1.currencyShortName}
-            self.likedCurrencyItemList = likedCurrencyArray.sorted {$0.currencyShortName < $1.currencyShortName}
-            
             self.tableView.reloadData()
+            return true
+        } else {
+            //print("Could not fetch \(error), \(error!.userInfo)")
+            return false
+        }
+        
+    }
+    
+    func perpareData() {
+        
+        if fetchDataFromDatabase() == false {
+            DataManager.getTopAppsDataFromFileWithSuccess("currencies"){(data) -> Void in
+                
+                let dictionay: Dictionary = JSON(data:data).dictionary!
+                
+                for (shortName, fullName) in dictionay {
+                    
+                    var currency = CurrencyItem(shortName: shortName, fullName: fullName.string!, price: 1)
+                    self.allCurrencyItemArray.append(currency)
+                    
+                }
+                print("currencies success!")
+            }
             
+            DataManager.getTopAppsDataFromFileWithSuccess("latest") { (data) -> Void in
+                let jsonData = JSON(data: data)
+                if let currencyDict = jsonData["rates"].dictionary {
+                    for (shortName, price) in currencyDict {
+                        for currencyItem in self.allCurrencyItemArray {
+                            if currencyItem.currencyShortName == shortName {
+                                currencyItem.currencyPrice = price.doubleValue
+                                
+                                if shortName == "CNY" || shortName == "USD" || shortName == "EUR" || shortName == "JPY" {
+                                    self.insertCurrencyItem(currencyItem, entityName: "LikedCurrencyItem")
+                                }
+                                self.insertCurrencyItem(currencyItem, entityName: "AllCurrencyItem")
+                            }
+                        }
+                    }
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.tableView.reloadData()
+                    })
+                }
+            }
+        }
+        
+    }
+    
+    func insertCurrencyItem(item: CurrencyItem, entityName: String) {
+        
+        let entity = NSEntityDescription.entityForName(entityName, inManagedObjectContext: managedContext)
+        let currencyItem = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+        
+        currencyItem.setValue(item.currencyFlatName, forKey: "flatName")
+        currencyItem.setValue(item.currencyFullName, forKey: "fullName")
+        currencyItem.setValue(item.currencyPrice, forKey: "price")
+        currencyItem.setValue(item.currencyShortName, forKey: "shortName")
+        currencyItem.setValue(item.valueForTextField, forKey: "valueForTextField")
+        
+        saveCurrencyData()
+        if entityName == "AllCurrencyItem" {
+            allCurrencyItemList.append(currencyItem)
+        } else {
+            likedCurrencyItemList.append(currencyItem)
+        }
+        
+    }
+    
+    func saveCurrencyData() {
+        var error: NSError?
+        if !managedContext.save(&error) {
+            print("Could not save \(error), \(error?.userInfo)")
         }
     }
+    
     
     @IBAction func cancel(sender: AnyObject) {
         delegate?.addItemFromAllCurrencyTableViewControllerDidCancel(self)
@@ -99,13 +183,17 @@ class AllCurrencyTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
+        var error: NSError?
+        
         switch indexPath.section {
         case 0:
-            let currencyItem = likedCurrencyItemList[indexPath.row]
+            var currencyItem = CurrencyItem(shortName: "CNY", fullName: "", price: 1.0)
+            currencyItem.getCurrencyItemFromNSManagedObject(likedCurrencyItemList[indexPath.row])
             delegate?.addItemFromAllCurrencyTableViewController(self, currencyItem: currencyItem)
             break
         case 1:
-            let currencyItem = allCurrencyItemList[indexPath.row]
+            var currencyItem = CurrencyItem(shortName: "CNY", fullName: "", price: 1.0)
+            currencyItem.getCurrencyItemFromNSManagedObject(allCurrencyItemList[indexPath.row])
             delegate?.addItemFromAllCurrencyTableViewController(self, currencyItem: currencyItem)
             break
         default:
@@ -114,17 +202,36 @@ class AllCurrencyTableViewController: UITableViewController {
         
     }
     
+//    func leftButtons() -> NSArray {
+//        
+//    }
+//    
+//    func rightButtons() -> NSArray {
+//        var rightUtilityButtons = NSMutableArray()
+//        rightUtilityButtons.sw_addUtilityButtonWithColor(UIColor(red: 0.78, green: 0.78,f, blue: 0.8,f, alpha: 1.0), attributedTitle: "Delete")
+//        
+//        return rightUtilityButtons;
+//    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UITableViewCell
+        var cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as! UITableViewCell
+//        if cell == nil {
+//            cell = SWTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: cellIdentifier)
+//            cell?.leftUtilityButtons = leftButtons()
+//            cell?.rightUtilityButtons = rightButtons()
+//            cell?.delegate = self
+//        }
         
         switch indexPath.section {
         case 0:
-            var currencyForRow = likedCurrencyItemList[indexPath.row]
+            var currencyForRow = CurrencyItem(shortName: "CNY", fullName: "", price: 1.0)
+            currencyForRow.getCurrencyItemFromNSManagedObject(likedCurrencyItemList[indexPath.row])
             updateTableViewCellCustomViews(cell, currencyForRow: currencyForRow, indexPath: indexPath)
             break
         case 1:
-            var currencyForRow = allCurrencyItemList[indexPath.row]
+            var currencyForRow = CurrencyItem(shortName: "CNY", fullName: "", price: 1.0)
+            currencyForRow.getCurrencyItemFromNSManagedObject(allCurrencyItemList[indexPath.row])
             updateTableViewCellCustomViews(cell, currencyForRow: currencyForRow, indexPath: indexPath)
             break
         default:

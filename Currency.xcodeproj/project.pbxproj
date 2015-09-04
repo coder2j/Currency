@@ -41,6 +41,7 @@
 		26660CB21B69274000E223F3 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		2666473B1B782F0D00A7FA45 /* currencies.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = currencies.json; sourceTree = "<group>"; };
 		2666473D1B782F2800A7FA45 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		26670CBA1B95B839002CF8AD /* bridgefile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridgefile.h; sourceTree = "<group>"; };
 		2692FF081B78E87800551276 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		26CC8BE51B79DA2700B7B534 /* latest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = latest.json; path = ../../../../../Downloads/latest.json; sourceTree = "<group>"; };
 		26CC8C191B7DD02700B7B534 /* Currency.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Currency.xcdatamodel; sourceTree = "<group>"; };
@@ -92,6 +93,7 @@
 		26E14DE71B5F221600213750 = {
 			isa = PBXGroup;
 			children = (
+				26670CBA1B95B839002CF8AD /* bridgefile.h */,
 				26E14DF21B5F221600213750 /* Currency */,
 				26E14E081B5F221600213750 /* CurrencyTests */,
 				26E14DF11B5F221600213750 /* Products */,
@@ -456,6 +458,7 @@
 				INFOPLIST_FILE = Currency/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/huangjunming/CS193p/Developer/Swift Project/Currency/bridgefile.h";
 			};
 			name = Debug;
 		};
@@ -467,6 +470,7 @@
 				INFOPLIST_FILE = Currency/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/huangjunming/CS193p/Developer/Swift Project/Currency/bridgefile.h";
 			};
 			name = Release;
 		};

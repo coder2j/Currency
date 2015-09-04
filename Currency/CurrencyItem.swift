@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 class CurrencyItem {
     
@@ -15,8 +16,6 @@ class CurrencyItem {
     var currencyFullName: String
     var currencyPrice: Double
     var valueForTextField: Double
-    var isAdded: Bool
-    var isFavorited: Bool
     
     init(shortName: String, fullName: String, price: Double){
         let index: String.Index = advance(shortName.startIndex, 2)
@@ -25,19 +24,25 @@ class CurrencyItem {
         self.currencyFullName = fullName
         self.currencyPrice = price
         self.valueForTextField = 100.0
-        self.isAdded = false
-        self.isFavorited = false
+    }
+    
+    func getCurrencyItemFromNSManagedObject(managedObject: NSManagedObject) -> CurrencyItem {
+        self.currencyShortName = managedObject.valueForKey("shortName") as! String
+        self.currencyFullName = managedObject.valueForKey("fullName") as! String
+        self.currencyFlatName = managedObject.valueForKey("flatName") as! String
+        self.currencyPrice = managedObject.valueForKey("price") as! Double
+        self.valueForTextField = managedObject.valueForKey("valueForTextField") as! Double
+        
+        return self
     }
     
 
-    func checkForEquality(currencyItemList: NSArray) -> Bool {
+    func checkForEquality(currencyItem: [NSManagedObject]) -> Bool {
         
-        for currencyItem in currencyItemList {
+        for i in 0..<currencyItem.count {
             
-            if (currencyItem as! CurrencyItem).currencyFullName == self.currencyFullName {
-                
+            if currencyItem[i].valueForKey("fullName") as! String == self.currencyFullName {
                 return true
-                
             }
         }
         

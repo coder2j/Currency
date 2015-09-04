@@ -17,22 +17,20 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
     
     let calculatorCurrencyIdentifier = "Calculator_Currency"
     var notificationCenter: NSNotificationCenter = NSNotificationCenter.defaultCenter()
-    var currencyItemsList = [CurrencyItem]()
-    var allCurrencyItemList = [CurrencyItem]()
-    
-    
-    var selectedRow = 0
-    var selectedRow_Currency: CurrencyItem!
-    var baseMoneyInUSD: Double!
+    var currencyItemsMain = [NSManagedObject]()
+    var allCurrencyItems = [NSManagedObject]()
+
+    var setting = [NSManagedObject]()
     
     let heightForTableViewCell: Int = 85
     
-    
+    let managedContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
+        self.tableView.rowHeight = 85
         
         pepareCurrencyData()
         
@@ -53,9 +51,9 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
                 let jsonData = JSON(json!)
                 if let currencyDict = jsonData["rates"].dictionary {
                     for (shortName, price) in currencyDict {
-                        for currencyItem in self.currencyItemsList {
-                            if currencyItem.currencyShortName == shortName {
-                                currencyItem.currencyPrice = price.doubleValue
+                        for i in 0..<self.currencyItemsMain.count {
+                            if (self.currencyItemsMain[i].valueForKey("shortName") as! String) == shortName {
+                                self.currencyItemsMain[i].setValue(price.doubleValue, forKey: "price")
                             }
                         }
                     }
@@ -71,59 +69,95 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
         }
     }
     
+    func fetchDataFromDatabase() -> Bool {
+        
+        //2
+        let fetchRequest = NSFetchRequest(entityName: "AddedCurrencyItem")
+        
+        //3
+        var error: NSError?
+        
+        let fetchedResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as? [NSManagedObject]
+        
+        if fetchedResults?.count > 0 {
+            currencyItemsMain = fetchedResults!
+            
+            let fetchRequestSetting = NSFetchRequest(entityName: "Setting")
+            let fetchSettingResults = managedContext.executeFetchRequest(fetchRequestSetting, error: &error) as? [NSManagedObject]
+            
+            if fetchSettingResults?.count == 1 {
+                
+                setting = fetchSettingResults!
+                return true
+            } else {
+                return false
+            }
+            
+        } else {
+            //print("Could not fetch \(error), \(error!.userInfo)")
+            return false
+        }
+    }
+    
+    func saveSetting(baseMoneyInUSD: Double, selectedRow: Int) {
+        
+        let entity = NSEntityDescription.entityForName("Setting", inManagedObjectContext: managedContext)
+        let setting = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+        setting.setValue(baseMoneyInUSD, forKey: "baseMoneyInUSD")
+        setting.setValue(selectedRow, forKey: "selectedRow")
+        self.setting.append(setting)
+        saveCurrencyData()
+    }
+    
+    func insertItemToAddedCurrencyItem(item: CurrencyItem) {
+        
+        let entity = NSEntityDescription.entityForName("AddedCurrencyItem", inManagedObjectContext: managedContext)
+        let currencyItem = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+        currencyItem.setValue(item.currencyFlatName, forKey: "flatName")
+        currencyItem.setValue(item.currencyFullName, forKey: "fullName")
+        currencyItem.setValue(item.currencyPrice, forKey: "price")
+        currencyItem.setValue(item.currencyShortName, forKey: "shortName")
+        currencyItem.setValue(item.valueForTextField, forKey: "valueForTextField")
+        
+        saveCurrencyData()
+        
+        currencyItemsMain.append(currencyItem)
+        dispatch_async(dispatch_get_main_queue(), {
+            self.tableView.reloadData()
+        })
+    }
+    
     func pepareCurrencyData() {
         
-        if currencyItemsList.count == 0 {
-            currencyItemsList.append(CurrencyItem(shortName: "USD", fullName: "United States Dollar", price: 1))
-            self.baseMoneyInUSD = self.currencyItemsList[0].valueForTextField / self.currencyItemsList[0].currencyPrice
-        }
-        
-        DataManager.getTopAppsDataFromFileWithSuccess("currencies"){(data) -> Void in
-            
-            let dictionay: Dictionary = JSON(data:data).dictionary!
-            
-            for (shortName, fullName) in dictionay {
+        if fetchDataFromDatabase() == false {
+            DataManager.getTopAppsDataFromFileWithSuccess("currencies"){(data) -> Void in
                 
-                var currency = CurrencyItem(shortName: shortName, fullName: fullName.string!, price: 1)
-                self.allCurrencyItemList.append(currency)
-            }
-            self.allCurrencyItemList = self.allCurrencyItemList.sorted {$0.currencyShortName < $1.currencyShortName}
-            print("currencies success!")
-        }
-        
-        
-        DataManager.getTopAppsDataFromFileWithSuccess("latest") { (data) -> Void in
-            let jsonData = JSON(data: data)
-            if let currencyDict = jsonData["rates"].dictionary {
-                for (shortName, price) in currencyDict {
-                    for currencyItem in self.allCurrencyItemList {
-                        if currencyItem.currencyShortName == shortName {
-                            currencyItem.currencyPrice = price.doubleValue
-                            
+                let dictionay: Dictionary = JSON(data:data).dictionary!
+                
+                for (shortName, fullName) in dictionay {
+                    
+                    if shortName == "USD" {
+                        DataManager.getTopAppsDataFromFileWithSuccess("latest") { (data) -> Void in
+                            let jsonData = JSON(data: data)
+                            if let currencyDict = jsonData["rates"].dictionary {
+                                for (shortNameInLatest, price) in currencyDict {
+                                    if shortNameInLatest == shortName {
+                                        var currencyItem = CurrencyItem(shortName: shortName, fullName: fullName.string!, price: price.doubleValue)
+                                        var baseMoneyInUSD: Double = currencyItem.valueForTextField / currencyItem.currencyPrice
+                                        var selectedRow = 0
+                                        
+                                        self.saveSetting(baseMoneyInUSD, selectedRow: selectedRow)
+                                        self.insertItemToAddedCurrencyItem(currencyItem)
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-                print("latest success!")
-                self.updateCurrencyPriceInArray(self.currencyItemsList[0], allCurrencyItemList: self.allCurrencyItemList)
-                self.baseMoneyInUSD = self.currencyItemsList[0].valueForTextField / self.currencyItemsList[0].currencyPrice
-                self.tableView.reloadData()
+                
+                print("currencies success!")
             }
         }
-        
-        
-    }
-    
-    
-    func updateCurrencyPriceInArray(currencyItem: CurrencyItem, allCurrencyItemList: NSArray) {
-        
-        for i in 0..<allCurrencyItemList.count {
-            let itemInAllCurrencyList: CurrencyItem = allCurrencyItemList[i] as! CurrencyItem
-            
-            if currencyItem.currencyShortName == itemInAllCurrencyList.currencyShortName {
-                currencyItem.currencyPrice = itemInAllCurrencyList.currencyPrice
-            }
-        }
-
     }
 
     
@@ -131,45 +165,51 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
     //MARK: - tableViewDelegate
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("cout is \(currencyItemsList.count) \n")
-        return currencyItemsList.count
-    }
-    
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        print("cout is \(currencyItemsMain.count) \n")
+        return currencyItemsMain.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(calculatorCurrencyIdentifier, forIndexPath: indexPath) as! UITableViewCell
-        let currencyForRow = currencyItemsList[indexPath.row]
+        let currencyForRow = currencyItemsMain[indexPath.row]
         updateTableViewCellCustomViews(cell, currencyForRow: currencyForRow, indexPath: indexPath)
         
         return cell
     }
     
-    func updateTableViewCellCustomViews(cell: UITableViewCell, currencyForRow: CurrencyItem, indexPath: NSIndexPath) {
+    func updateTableViewCellCustomViews(cell: UITableViewCell, currencyForRow: NSManagedObject, indexPath: NSIndexPath) {
         
         
         let shortName = cell.viewWithTag(200) as! UILabel
-        shortName.text = currencyForRow.currencyShortName
+        shortName.text = currencyForRow.valueForKey("shortName") as? String
         
         let flagImageView = cell.viewWithTag(100) as! UIImageView
-        flagImageView.image = UIImage(named: currencyForRow.currencyFlatName)
+        flagImageView.image = UIImage(named: (currencyForRow.valueForKey("flatName") as? String)!)
         flagImageView.layer.borderColor = UIColor.blackColor().CGColor
         flagImageView.layer.borderWidth = 0.1
         flagImageView.layer.cornerRadius = 32
         flagImageView.clipsToBounds = true
         
         let fullName = cell.viewWithTag(300) as! UILabel
-        fullName.text = currencyForRow.currencyFullName
+        fullName.text = currencyForRow.valueForKey("fullName") as? String
         
         let textField = cell.viewWithTag(400) as! UITextField
-        if indexPath.row != selectedRow {
+        if indexPath.row != setting[0].valueForKey("selectedRow") as! Int {
             textField.userInteractionEnabled = false
         }
-        currencyForRow.valueForTextField = baseMoneyInUSD * currencyForRow.currencyPrice
         
-        textField.text = String(format: "%.2f", currencyForRow.valueForTextField)
+        var valueForTextField: Double
+        
+        if indexPath.row == setting[0].valueForKey("selectedRow") as! Int {
+            valueForTextField = currencyForRow.valueForKey("valueForTextField") as! Double
+        } else {
+            valueForTextField = (setting[0].valueForKey("baseMoneyInUSD") as! Double) * (currencyForRow.valueForKey("price") as! Double)
+            
+            currencyForRow.setValue(valueForTextField, forKey: "valueForTextField")
+            saveCurrencyData()
+        }
+        
+        textField.text = String(format: "%.2f", valueForTextField)
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -181,14 +221,16 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        currencyItemsList.removeAtIndex(indexPath.row)
+        managedContext.deleteObject(currencyItemsMain[indexPath.row])
+        currencyItemsMain.removeAtIndex(indexPath.row)
+        saveCurrencyData()
         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-        
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     
-        selectedRow = indexPath.row
+        setting[0].setValue(indexPath.row, forKey: "selectedRow")
+        
         
         let cell: UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
         let textField = cell.viewWithTag(400) as! UITextField
@@ -199,9 +241,8 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
         notificationCenter.addObserver(self, selector: "textField_Value_Changed:", name: UITextFieldTextDidChangeNotification, object: textField)  //listen to the keyboard, when button is tapped update the money in different currency
         
         // refresh cell incase nothing was input
-        for i in 0..<currencyItemsList.count {
-            let currencyItem = currencyItemsList[i]
-            if i != selectedRow {
+        for i in 0..<currencyItemsMain.count {
+            if i != setting[0].valueForKey("selectedRow") as! Int {
                 let indexPath: NSIndexPath = NSIndexPath(forRow: i, inSection: 0)
                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
             }
@@ -210,9 +251,6 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return CGFloat(heightForTableViewCell)
-    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showAllCurrency" {
@@ -224,13 +262,14 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
     
     func addItemFromAllCurrencyTableViewController(controller: AllCurrencyTableViewController, currencyItem: CurrencyItem) {
         
-        if currencyItem.checkForEquality(currencyItemsList) == false {
-            updateCurrencyPriceInArray(currencyItem, allCurrencyItemList: allCurrencyItemList)
-            currencyItemsList.append(currencyItem)
-            let indexPath: NSIndexPath = NSIndexPath(forRow: currencyItemsList.count - 1, inSection: 0)
-            print(currencyItemsList.count)
-            print(indexPath.row)
+        if currencyItem.checkForEquality(currencyItemsMain) == false {
+            
+            insertItemToAddedCurrencyItem(currencyItem)
+            
+            let indexPath: NSIndexPath = NSIndexPath(forRow: currencyItemsMain.count - 1, inSection: 0)
             tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
+            
+            
             controller.dismissViewControllerAnimated(true, completion: nil)
         } else {
             let alertView = UIAlertView(title: "警告", message: "货币已经存在", delegate: controller, cancelButtonTitle: "OK")
@@ -247,20 +286,28 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
     //MARK: - custom function
     
     func refreshTabelViewCell(textField: UITextField) {
-        selectedRow_Currency = currencyItemsList[selectedRow]
-        selectedRow_Currency.valueForTextField = (textField.text as NSString).doubleValue
         
-        baseMoneyInUSD = selectedRow_Currency.valueForTextField / selectedRow_Currency.currencyPrice
+        var selectedRow = setting[0].valueForKey("selectedRow") as! Int
+        var textFieldValueForSelectedRow: Double = (textField.text as NSString).doubleValue
+        var baseMoneyInUSD = textFieldValueForSelectedRow / (currencyItemsMain[selectedRow].valueForKey("price") as! Double)
         
-        for i in 0..<currencyItemsList.count {
-            let currencyItem = currencyItemsList[i]
+        setting[0].setValue(baseMoneyInUSD, forKey: "baseMoneyInUSD")
+        currencyItemsMain[selectedRow].setValue(textFieldValueForSelectedRow, forKey: "valueForTextField")
+        
+        for i in 0..<currencyItemsMain.count {
+
             if i != selectedRow {
-                currencyItem.valueForTextField = baseMoneyInUSD * currencyItem.currencyPrice
+                let valueForTextField = baseMoneyInUSD * (currencyItemsMain[i].valueForKey("price") as! Double)
+                currencyItemsMain[i].setValue(valueForTextField, forKey: "valueForTextField")
                 let indexPath: NSIndexPath = NSIndexPath(forRow: i, inSection: 0)
                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
             }
         }
+        
+        saveCurrencyData()
+        
     }
+    
 
     func textField_Value_Changed(notification: NSNotification) {
         let textField: UITextField = notification.object as! UITextField
@@ -271,5 +318,12 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func saveCurrencyData() {
+        var error: NSError?
+        if !managedContext.save(&error) {
+            print("Could not save \(error), \(error?.userInfo)")
+        }
     }
 }
