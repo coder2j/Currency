@@ -49,9 +49,9 @@ code_sign() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Alamofire.framework'
-  install_framework 'SWTableViewCell.framework'
+  install_framework 'MGSwipeTableCell.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Alamofire.framework'
-  install_framework 'SWTableViewCell.framework'
+  install_framework 'MGSwipeTableCell.framework'
 fi

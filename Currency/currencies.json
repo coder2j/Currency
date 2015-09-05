@@ -28,12 +28,10 @@
 	"CAD": "Canadian Dollar",
 	"CDF": "Congolese Franc",
 	"CHF": "Swiss Franc",
-	"CLF": "Chilean Unit of Account (UF)",
 	"CLP": "Chilean Peso",
 	"CNY": "Chinese Yuan",
 	"COP": "Colombian Peso",
 	"CRC": "Costa Rican Colón",
-	"CUC": "Cuban Convertible Peso",
 	"CUP": "Cuban Peso",
 	"CVE": "Cape Verdean Escudo",
 	"CZK": "Czech Republic Koruna",
@@ -98,7 +96,6 @@
 	"MNT": "Mongolian Tugrik",
 	"MOP": "Macanese Pataca",
 	"MRO": "Mauritanian Ouguiya",
-	"MTL": "Maltese Lira",
 	"MUR": "Mauritian Rupee",
 	"MVR": "Maldivian Rufiyaa",
 	"MWK": "Malawian Kwacha",
@@ -167,7 +164,6 @@
 	"XPT": "Platinum Ounce",
 	"YER": "Yemeni Rial",
 	"ZAR": "South African Rand",
-	"ZMK": "Zambian Kwacha (pre-2013)",
 	"ZMW": "Zambian Kwacha",
 	"ZWL": "Zimbabwean Dollar"
 }

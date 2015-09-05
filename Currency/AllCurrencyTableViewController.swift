@@ -9,9 +9,9 @@
 import UIKit
 import Alamofire
 import CoreData
-import SWTableViewCell
+import MGSwipeTableCell
 
-class AllCurrencyTableViewController: UITableViewController {
+class AllCurrencyTableViewController: UITableViewController, MGSwipeTableCellDelegate {
 
     var delegate: AllCurrencyTableViewDelegate?
     
@@ -26,7 +26,7 @@ class AllCurrencyTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //self.tableView.separatorInset = UIEdgeInsetsZero
         perpareData()
     
     }
@@ -95,11 +95,15 @@ class AllCurrencyTableViewController: UITableViewController {
                                 
                                 if shortName == "CNY" || shortName == "USD" || shortName == "EUR" || shortName == "JPY" {
                                     self.insertCurrencyItem(currencyItem, entityName: "LikedCurrencyItem")
+                                } else {
+                                    self.insertCurrencyItem(currencyItem, entityName: "AllCurrencyItem")
                                 }
-                                self.insertCurrencyItem(currencyItem, entityName: "AllCurrencyItem")
                             }
                         }
                     }
+                    
+                    self.fetchDataFromDatabase()
+                    
                     dispatch_async(dispatch_get_main_queue(), {
                         self.tableView.reloadData()
                     })
@@ -114,7 +118,6 @@ class AllCurrencyTableViewController: UITableViewController {
         let entity = NSEntityDescription.entityForName(entityName, inManagedObjectContext: managedContext)
         let currencyItem = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
         
-        currencyItem.setValue(item.currencyFlatName, forKey: "flatName")
         currencyItem.setValue(item.currencyFullName, forKey: "fullName")
         currencyItem.setValue(item.currencyPrice, forKey: "price")
         currencyItem.setValue(item.currencyShortName, forKey: "shortName")
@@ -162,6 +165,7 @@ class AllCurrencyTableViewController: UITableViewController {
             label.text = ""
             break
         }
+        label.textColor = UIColor(red: 0.1137, green: 0.3451, blue: 0.8118, alpha: 1.0)
         return label
     }
     
@@ -202,31 +206,21 @@ class AllCurrencyTableViewController: UITableViewController {
         
     }
     
-//    func leftButtons() -> NSArray {
-//        
-//    }
-//    
-//    func rightButtons() -> NSArray {
-//        var rightUtilityButtons = NSMutableArray()
-//        rightUtilityButtons.sw_addUtilityButtonWithColor(UIColor(red: 0.78, green: 0.78,f, blue: 0.8,f, alpha: 1.0), attributedTitle: "Delete")
-//        
-//        return rightUtilityButtons;
-//    }
-    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as! UITableViewCell
-//        if cell == nil {
-//            cell = SWTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: cellIdentifier)
-//            cell?.leftUtilityButtons = leftButtons()
-//            cell?.rightUtilityButtons = rightButtons()
-//            cell?.delegate = self
-//        }
+        var cell: AllCurrencyTableCell! = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as? AllCurrencyTableCell
+
+        if cell == nil {
+            cell = AllCurrencyTableCell(style: UITableViewCellStyle.Default , reuseIdentifier: cellIdentifier)
+        }
+        
+        cell?.delegate = self
         
         switch indexPath.section {
         case 0:
             var currencyForRow = CurrencyItem(shortName: "CNY", fullName: "", price: 1.0)
             currencyForRow.getCurrencyItemFromNSManagedObject(likedCurrencyItemList[indexPath.row])
+            
             updateTableViewCellCustomViews(cell, currencyForRow: currencyForRow, indexPath: indexPath)
             break
         case 1:
@@ -246,22 +240,113 @@ class AllCurrencyTableViewController: UITableViewController {
     }
     
     
-    func updateTableViewCellCustomViews(cell: UITableViewCell, currencyForRow: CurrencyItem, indexPath: NSIndexPath) {
+    func updateTableViewCellCustomViews(cell: AllCurrencyTableCell!, currencyForRow: CurrencyItem, indexPath: NSIndexPath) {
         
-        var shortName = cell.viewWithTag(200) as! UILabel
-        shortName.text = currencyForRow.currencyShortName
+        cell.shortNameLabel.text = currencyForRow.currencyShortName
+        cell.fullNameLabel.text = currencyForRow.currencyFullName
+        cell.flagImageView.image = UIImage(named: currencyForRow.currencyShortName.lowercaseString)
+        cell.flagImageView.layer.borderColor = UIColor.blackColor().CGColor
+        cell.flagImageView.layer.borderWidth = 0.1
+        cell.flagImageView.layer.cornerRadius = 32
+        cell.flagImageView.clipsToBounds = true
         
-        var flagImageView = cell.viewWithTag(100) as! UIImageView
-        flagImageView.image = UIImage(named: currencyForRow.currencyFlatName)
-        flagImageView.layer.borderColor = UIColor.blackColor().CGColor
-        flagImageView.layer.borderWidth = 0.1
-        flagImageView.layer.cornerRadius = 32
-        flagImageView.clipsToBounds = true
+        cell.layoutMargins = UIEdgeInsetsZero
         
-        var fullName = cell.viewWithTag(300) as! UILabel
-        fullName.text = currencyForRow.currencyFullName
-        
+        cell.separatorInset = UIEdgeInsetsZero
+        cell.preservesSuperviewLayoutMargins = false
     }
     
+    //MARK: - Swipe Delegate
+    func swipeTableCell(cell: MGSwipeTableCell!, canSwipe direction: MGSwipeDirection) -> Bool {
+        return true
+    }
+    
+    func swipeTableCell(cell: MGSwipeTableCell!, swipeButtonsForDirection direction: MGSwipeDirection, swipeSettings: MGSwipeSettings!, expansionSettings: MGSwipeExpansionSettings!) -> [AnyObject]! {
+        swipeSettings.transition = MGSwipeTransition.ClipCenter
+        swipeSettings.keepButtonsSwiped = true
+        expansionSettings.buttonIndex = 0
+        expansionSettings.threshold = 1
+        expansionSettings.expansionLayout = MGSwipeExpansionLayout.Border
+        expansionSettings.fillOnTrigger = true
+        
+        let indexPath: NSIndexPath = self.tableView.indexPathForCell(cell)!
+        let font = UIFont(name: "HelveticaNeue-Light", size: 14.0)
+        if indexPath.section == 0 {
+            let color = UIColor(red: 255.0/255.0, green: 30.0/255.0, blue: 29.0/255.0, alpha: 1.0)
+            expansionSettings.expansionColor = color
+            if direction == MGSwipeDirection.RightToLeft {
+                var deleteButton = MGSwipeButton(title: "DELETE", backgroundColor: color, padding: 15, callback: { (sender: MGSwipeTableCell!) -> Bool in
+                    
+                    let item = CurrencyItem(shortName: (self.likedCurrencyItemList[indexPath.row].valueForKey("shortName") as! String), fullName:(self.likedCurrencyItemList[indexPath.row].valueForKey("fullName") as! String), price: self.likedCurrencyItemList[indexPath.row].valueForKey("price") as! Double)
+                    self.insertCurrencyItem(item, entityName: "AllCurrencyItem")
+                    
+                    let indexPaths = NSIndexPath(forRow: self.allCurrencyItemList.count - 1, inSection: 1)
+                    self.tableView.insertRowsAtIndexPaths([indexPaths], withRowAnimation: UITableViewRowAnimation.None)
+                    
+                    
+                    self.managedContext.deleteObject(self.likedCurrencyItemList[indexPath.row])
+                    self.likedCurrencyItemList.removeAtIndex(indexPath.row)
+                    self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                    
+                    self.saveCurrencyData()
+                    return false
+                })
+                deleteButton.titleLabel?.font = font;
+                return [deleteButton]
+            }
+            
+        } else {
+            let color = UIColor(red:33/255.0, green:175/255.0, blue:67/255.0, alpha:1.0)
+            expansionSettings.expansionColor = color
+            if direction == MGSwipeDirection.LeftToRight {
+                var likedButton = MGSwipeButton(title: "LIKED", backgroundColor: color, padding: 20, callback: { (sender: MGSwipeTableCell!) -> Bool in
+                    
+                    let item = CurrencyItem(shortName: (self.allCurrencyItemList[indexPath.row].valueForKey("shortName") as! String), fullName:(self.allCurrencyItemList[indexPath.row].valueForKey("fullName") as! String), price: self.allCurrencyItemList[indexPath.row].valueForKey("price") as! Double)
+                    self.insertCurrencyItem(item, entityName: "LikedCurrencyItem")
+                    let indexPaths = NSIndexPath(forRow: self.likedCurrencyItemList.count - 1, inSection: 0)
+                    
+                    self.tableView.insertRowsAtIndexPaths([indexPaths], withRowAnimation: UITableViewRowAnimation.Left)
+                    
+                    self.managedContext.deleteObject(self.allCurrencyItemList[indexPath.row])
+                    self.allCurrencyItemList.removeAtIndex(indexPath.row)
+                    self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+                    
+                    self.saveCurrencyData()
+                    
+                    return true
+                })
+                likedButton.titleLabel?.font = font
+                return [likedButton]
+            }
+        }
+        return nil
+    }
+    
+    func swipeTableCell(cell: MGSwipeTableCell!, didChangeSwipeState state: MGSwipeState, gestureIsActive: Bool) {
+        var str: String
+        switch (state) {
+        case MGSwipeState.None:
+            str = "None"
+            break
+        case MGSwipeState.SwipingLeftToRight:
+            str = "SwippingLeftToRight"
+            break
+        case MGSwipeState.SwipingRightToLeft:
+            str = "SwipingRightToLeft"
+            break
+        case MGSwipeState.ExpandingLeftToRight:
+            str = "ExpandingLeftToRight"
+            break
+        case MGSwipeState.ExpandingRightToLeft:
+            str = "ExpandingRightToLeft"
+            break
+        }
+        if gestureIsActive {
+            print("Swipe state: \(str) ::: Gesture: Active")
+        } else {
+            print("Swipe state: \(str) ::: Gesture: Ended")
+        }
+        
+    }
     
 }

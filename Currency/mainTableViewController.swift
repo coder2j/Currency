@@ -31,6 +31,7 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
         super.viewDidLoad()
         
         self.tableView.rowHeight = 85
+        self.tableView.tableFooterView = UIView(frame: CGRectZero)
         
         pepareCurrencyData()
         
@@ -70,11 +71,9 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
     }
     
     func fetchDataFromDatabase() -> Bool {
-        
-        //2
+
         let fetchRequest = NSFetchRequest(entityName: "AddedCurrencyItem")
-        
-        //3
+
         var error: NSError?
         
         let fetchedResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as? [NSManagedObject]
@@ -113,7 +112,6 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
         
         let entity = NSEntityDescription.entityForName("AddedCurrencyItem", inManagedObjectContext: managedContext)
         let currencyItem = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
-        currencyItem.setValue(item.currencyFlatName, forKey: "flatName")
         currencyItem.setValue(item.currencyFullName, forKey: "fullName")
         currencyItem.setValue(item.currencyPrice, forKey: "price")
         currencyItem.setValue(item.currencyShortName, forKey: "shortName")
@@ -172,6 +170,9 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(calculatorCurrencyIdentifier, forIndexPath: indexPath) as! UITableViewCell
         let currencyForRow = currencyItemsMain[indexPath.row]
+        cell.layoutMargins = UIEdgeInsetsZero
+        cell.preservesSuperviewLayoutMargins = false
+        
         updateTableViewCellCustomViews(cell, currencyForRow: currencyForRow, indexPath: indexPath)
         
         return cell
@@ -179,12 +180,11 @@ class mainTableViewController: UITableViewController, UITextFieldDelegate, AllCu
     
     func updateTableViewCellCustomViews(cell: UITableViewCell, currencyForRow: NSManagedObject, indexPath: NSIndexPath) {
         
-        
         let shortName = cell.viewWithTag(200) as! UILabel
         shortName.text = currencyForRow.valueForKey("shortName") as? String
         
         let flagImageView = cell.viewWithTag(100) as! UIImageView
-        flagImageView.image = UIImage(named: (currencyForRow.valueForKey("flatName") as? String)!)
+        flagImageView.image = UIImage(named: (currencyForRow.valueForKey("shortName") as! String).lowercaseString)
         flagImageView.layer.borderColor = UIColor.blackColor().CGColor
         flagImageView.layer.borderWidth = 0.1
         flagImageView.layer.cornerRadius = 32

@@ -9,6 +9,7 @@
 #ifndef Currency_bridgefile_h
 #define Currency_bridgefile_h
 
-#import <SWTableViewCell/SWTableViewCell.h>
+#import "MGSwipeTableCell/MGSwipeButton.h"
+#import "MGSwipeTableCell/MGSwipeTableCell.h"
 
 #endif
